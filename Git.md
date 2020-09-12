@@ -71,7 +71,7 @@ rm 'test.txt'
 
 $ git commit -m "remove test.txt"
 ```
-在文件管理器中把test.txt文件删除后，如果确定要删除文件，使用命令`git rm`，再`git commit`，可将文件从版本库中删除。
+在文件管理器中把test.txt文件删除后，如果确定要删除文件，使用命令`git rm`（同`git add`），再`git commit`，可将文件从版本库中删除。
 
 ```git
 $ git checkout -- test.txt
