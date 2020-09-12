@@ -92,3 +92,10 @@ $ git remote add origin https://github.com/haipengyuan/day-day-up.git
 $ git push -u origin master
 ```
 `git push`命令是把当前分支master推送到远程。由于远程库是空的，我们第一次推送master分支时，加上了`-u`参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+
+## 其他操作
+### 配置别名
+```git
+$ git config --global alias.st status
+```
+加上`--global`是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。
