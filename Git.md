@@ -1,6 +1,9 @@
 # Git使用
 
+[toc]
+
 ## 设置个人信息
+
 ```git
 $ git config --global user.name "Your name"
 $ git config --global user.email "email@example.com"
@@ -92,6 +95,12 @@ $ git remote add origin https://github.com/haipengyuan/day-day-up.git
 $ git push -u origin master
 ```
 `git push`命令是把当前分支master推送到远程。由于远程库是空的，我们第一次推送master分支时，加上了`-u`参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+
+克隆Github上的仓库：
+
+```git
+$ git clone git@github.com:haipengyuan/day-day-up.git
+```
 
 ## 其他操作
 ### 配置别名
