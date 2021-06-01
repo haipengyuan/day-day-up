@@ -2353,4 +2353,117 @@ class Trie {
  */
 ```
 
-#### [面试题 17.17. 多次搜索](https://leetcode-cn.com/problems/multi-search-lcci/)
+# [面试题 17.17. 多次搜索](https://leetcode-cn.com/problems/multi-search-lcci/)
+
+给定一个较长字符串 big 和一个包含较短字符串的数组 smalls ，设计一个方法，根据 smalls 中的每一个较短字符串，对 big 进行搜索。输出 smalls 中的字符串在 big 里出现的所有位置 positions ，其中 positions[i] 为 smalls[i] 出现的所有位置。
+
+**示例：**
+
+```
+输入：
+big = "mississippi"
+smalls = ["is","ppi","hi","sis","i","ssippi"]
+输出： [[1,4],[8],[],[3],[1,4,7,10],[5]]
+```
+
+**提示：**
+
+* 0 <= len(big) <= 1000
+* 0 <= len(smalls[i]) <= 1000
+* smalls的总字符数不会超过 100000。
+* 你可以认为smalls中没有重复字符串。
+* 所有出现的字符均为英文小写字母。
+
+## 前缀树
+
+* 用 smalls 构造前缀树。
+* 在前缀树中查找所有 big 中由 i 到末尾的子串，若能遍历到前缀树中 end 不为空的节点，则说明该条路径对应的字符串（即 end 中存储的字符串）在 big 中存在。
+
+```java
+class Solution {
+    public int[][] multiSearch(String big, String[] smalls) {
+        Trie trie = new Trie(smalls);
+        Map<String, List<Integer>> hit = new HashMap<>();
+        for (int i = 0; i < big.length(); i++) {
+            List<String> matchs = trie.search(big.substring(i));
+            for (String word : matchs) {
+                if (!hit.containsKey(word)) {
+                    hit.put(word, new ArrayList<>());
+                }
+                hit.get(word).add(i);
+            }
+        }
+
+        int[][] res = new int[smalls.length][];
+        for (int i = 0; i < smalls.length; i++) {
+            List<Integer> list = hit.get(smalls[i]);
+            if (list == null) {
+                res[i] = new int[0];
+                continue;
+            }
+            int size = list.size();
+            res[i] = new int[size];
+            for (int j = 0; j < size; j++) {
+                res[i][j] = list.get(j);
+            }
+        }
+        return res;
+    }
+
+    class Trie {
+        private TreeNode root;
+
+        public Trie(String[] words) {
+            root = new TreeNode('/');
+            for (String word : words) {
+                insert(word);
+            }
+        }
+        
+        public void insert(String word) {
+            TreeNode p = root;
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                int index = c - 'a';
+                if (p.children[index] == null) {
+                    TreeNode node = new TreeNode(c);
+                    p.children[index] = node;
+                }
+                p = p.children[index];
+            }
+            p.end = word;
+        }
+        
+        public List<String> search(String word) {
+            TreeNode p = root;
+            List<String> res = new ArrayList<>();
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                int index = c - 'a';
+                if (p.children[index] == null) {
+                    break;
+                }
+                p = p.children[index];
+                if (p.end != null) {
+                    res.add(p.end);
+                }
+            }
+            return res;
+        }
+
+        public class TreeNode {
+            public char data;
+            public TreeNode[] children = new TreeNode[26];
+            public String end;
+            public TreeNode(char data) {
+                this.data = data;
+            }
+        }
+    }
+}
+```
+
+
+
+
+
