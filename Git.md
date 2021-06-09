@@ -2,14 +2,42 @@
 
 [toc]
 
-## 设置个人信息
+## 初始设置
+
+### 设置姓名和邮箱地址
 
 ```git
 $ git config --global user.name "Your name"
 $ git config --global user.email "email@example.com"
 ```
 
+设置的信息保存在 `～/.gitconfig`  文件中。
+
+```
+[user]
+  name = Your name
+  email = email@example.com
+```
+
+这里设置的姓名和邮箱地址会用在Git的提交日志中。
+
+### 提高命令输出的可读性
+
+将 `color.ui` 设置为 `auto` 可以让命令的输出拥有更高的可读性。
+
+```
+$ git config --global color.ui auto
+```
+
+设置的信息同样也保存在 `～/.gitconfig`  文件中。
+
+```
+[color]
+  ui = auto
+```
+
 ## 创建版本库
+
 ```git
 $ git init
 Initialized empty Git repository in G:/Code/git/.git/
