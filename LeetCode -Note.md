@@ -1,10 +1,652 @@
-# 141. 环形链表
+# 链表
+
+## [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/) 
+
+给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
+
+请你将两个数相加，并以相同形式返回一个表示和的链表。
+
+你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+**示例 1：**
+
+```
+输入：l1 = [2,4,3], l2 = [5,6,4]
+输出：[7,0,8]
+解释：342 + 465 = 807.
+```
+
+**示例 2：**
+
+```
+输入：l1 = [0], l2 = [0]
+输出：[0]
+```
+
+**示例 3：**
+
+```
+输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+输出：[8,9,9,9,0,0,0,1]
+```
+
+**提示：**
+
+- 每个链表中的节点数在范围 `[1, 100]` 内
+- `0 <= Node.val <= 9`
+- 题目数据保证列表表示的数字不含前导零
+
+### 题解
+
+由于输入的链表是逆序存储，因此可以从头开始，逐位计算两个节点的和，并与进位值相加。
+
+当某个链表遍历完时，可以视为当前节点的值为 0 。
+
+当两个链表都遍历完时，若进位值不为 0 ，则还需要再创建一个节点保存进位值。
+
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode();	// 保存相加的结果
+        ListNode cur = res;
+        int carry = 0;	// 相加的进位值
+        while (l1 != null || l2 != null || carry != 0) {
+            int n1 = l1 != null ? l1.val : 0;
+            int n2 = l2 != null ? l2.val : 0;
+
+            int sum = n1 + n2 + carry;
+            carry = sum / 10;
+            int val = sum % 10;
+
+            cur.next = new ListNode(val);
+            cur = cur.next;
+
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        return res.next;
+    }
+}
+```
+
+* 时间复杂度：O(max(m, n))，m 和 n 分别为两个链表的长度
+* 空间复杂度：O(1)，返回值不计入复杂度
+
+## [445. 两数相加 II](https://leetcode-cn.com/problems/add-two-numbers-ii/)
+
+给你两个 **非空** 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
+
+你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+
+**示例 1：**
+
+```
+输入：l1 = [7,2,4,3], l2 = [5,6,4]
+输出：[7,8,0,7]
+```
+
+**示例 2：**
+
+```
+输入：l1 = [2,4,3], l2 = [5,6,4]
+输出：[8,0,7]
+```
+
+**示例 3：**
+
+```
+输入：l1 = [0], l2 = [0]
+输出：[0]
+```
+
+**提示：**
+
+- 链表的长度范围为` [1, 100]`
+- `0 <= node.val <= 9`
+- 输入数据保证链表代表的数字无前导 0
+
+**进阶：**如果输入链表不能修改该如何处理？换句话说，不能对列表中的节点进行翻转。
+
+### 栈
+
+借助**栈**，将节点的值依次存入栈中，再取出，就可以实现从低位到高位访问数字。
+
+创建结果链表时，使用**头插法**，即可满足结果从高位到低位正向存放。
+
+ ```java
+ class Solution {
+     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+         Deque<Integer> stack1 = new LinkedList<>(); 
+         Deque<Integer> stack2 = new LinkedList<>();
+         while (l1 != null) {
+             stack1.push(l1.val);
+             l1 = l1.next;
+         }
+         while (l2 != null) {
+             stack2.push(l2.val);
+             l2 = l2.next;
+         }
+         int carry = 0;
+         ListNode head = null;
+         
+         while (!stack1.isEmpty() || !stack2.isEmpty() || carry != 0) {
+             int n1 = stack1.isEmpty() ? 0 : stack1.pop();
+             int n2 = stack2.isEmpty() ? 0 : stack2.pop();
+             
+             int sum = n1 + n2 + carry;
+             carry = sum / 10;
+             int val = sum % 10;
+ 
+             ListNode node = new ListNode(val);
+             node.next = head;
+             head = node;
+         }
+         return head;
+     }
+ }
+ ```
+
+* 时间复杂度：O(max(m, n))，m 和 n 分别为两个链表的长度
+* 空间复杂度：O(m + n)，使用了栈
+
+## [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
+
+给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+
+**示例 1：**
+
+```
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+```
+
+**示例 2：**
+
+```
+输入：head = [1,2]
+输出：[2,1]
+```
+
+**示例 3：**
+
+```
+输入：head = []
+输出：[]
+```
+
+**提示：**
+
+- 链表中节点的数目范围是 `[0, 5000]`
+- `-5000 <= Node.val <= 5000`
+
+### 迭代
+
+```java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(1)
+
+### 递归
+
+```java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode res = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return res;
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(n) ，空间复杂度主要取决于递归调用的栈空间，最多为 n 层
+
+## [92. 反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
+
+给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
+
+**示例 1：**
+
+```
+输入：head = [1,2,3,4,5], left = 2, right = 4
+输出：[1,4,3,2,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [5], left = 1, right = 1
+输出：[5]
+```
+
+**提示：**
+
+- 链表中节点数目为 `n`
+- `1 <= n <= 500`
+- `-500 <= Node.val <= 500`
+- `1 <= left <= right <= n`
+
+### 一趟扫描
+
+解决链表问题的技巧：**画图**
+
+![image.png](E:\doc\Note\LeetCode Note.assets\1615105296-bmiPxl-image.png)
+
+![image.png](E:\doc\Note\LeetCode Note.assets\1615105340-UBnTBZ-image.png)
+
+![image.png](E:\doc\Note\LeetCode Note.assets\1615105353-PsCmzb-image.png)
+
+![image.png](E:\doc\Note\LeetCode Note.assets\1615105364-aDIFqy-image.png)
+
+![image.png](E:\doc\Note\LeetCode Note.assets\1615105376-jIyGwv-image.png)
+
+```java
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // 设置一个虚拟头节点
+        ListNode dummy = new ListNode(-1, head);
+        ListNode pre = dummy;
+        // 找到待反转区域的前一个节点
+        for (int i = 0; i < left - 1; i++) {
+            pre = pre.next;
+        }
+        ListNode curr = pre.next;
+        for (int i = 0; i < right - left; i++) {
+            ListNode next = curr.next;
+            curr.next = next.next;
+            next.next = pre.next;
+            pre.next = next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(1) 
+
+## [143. 重排链表](https://leetcode-cn.com/problems/reorder-list/)
+
+**示例 1:**
+
+![image-20210802213526506](E:\doc\Note\LeetCode Note.assets\image-20210802213526506.png)
+
+```
+输入: head = [1,2,3,4]
+输出: [1,4,2,3]
+```
+
+**示例 2:**
+
+```
+输入: head = [1,2,3,4,5]
+输出: [1,5,2,4,3]
+```
+
+**提示：**
+
+- 链表的长度范围为 `[1, 5 * 104]`
+- `1 <= node.val <= 1000`
+
+### 寻找链表中点 + 链表逆序 + 合并链表
+
+观察重排后的链表可以发现，重排链表为原链表的 **前半部分** 与 **后半部分的逆序** 合并后的结果。
+
+因此，可以将整个过程拆分 ：
+
+1. 找到原链表的中点（[876. 链表的中间结点](https://leetcode-cn.com/problems/middle-of-the-linked-list/)）
+2. 反转链表中点之后的部分（[206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)）
+3. 合并
+
+```java
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        ListNode mid = middleNode(head);
+        ListNode l1 = head;
+        ListNode l2 = mid.next;
+        mid.next = null;
+        l2 = reverseList(l2);
+        mergeList(l1, l2);
+    }
+
+    // 寻找链表中点
+    private ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // 链表逆序
+    private ListNode reverseList(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;       
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    // 合并
+    private void mergeList(ListNode l1, ListNode l2) {
+        ListNode nextL1;
+        ListNode nextL2;
+        while (l1 != null && l2 != null) {
+            nextL1 = l1.next;
+            nextL2 = l2.next;
+
+            l1.next = l2;
+            l1 = nextL1;
+
+            l2.next = l1;
+            l2 = nextL2;
+        }
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(1) 
+
+## [876. 链表的中间结点](https://leetcode-cn.com/problems/middle-of-the-linked-list/)
+
+给定一个头结点为 `head` 的非空单链表，返回链表的中间结点。
+
+如果有两个中间结点，则返回第二个中间结点。
+
+**提示：**
+
+给定链表的结点数介于 1 和 100 之间。
+
+### 快慢指针
+
+```java
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+```
+
+## [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
+
+请判断一个链表是否为回文链表。
+
+**示例 1:**
+
+```
+输入: 1->2
+输出: false
+
+```
+
+**示例 2:**
+
+```
+输入: 1->2->2->1
+输出: true
+```
+
+**进阶：**
+你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+
+### 反转链表
+
+根据回文链表的特点，将链表后半部分反转后与前半部分相同，因此可以这样处理：
+
+1. 寻找链表中点
+2. 反转后半部分
+3. 将反转后的结果与前半部分比较，判断是否相同
+4. 恢复链表
+
+```java
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) return true;
+        ListNode mid = middleNode(head);
+        ListNode secondHalf = reverseList(mid.next);
+
+        ListNode l1 = head;
+        ListNode l2 = secondHalf;
+        boolean res = true;
+        while (l1 != null && l2 != null) {
+            if (l1.val != l2.val) {
+                res = false;
+                break;
+            }
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        // 还原链表
+        mid.next = reverseList(secondHalf);
+
+        return res;
+    }
+
+    // 寻找链表中点
+    private ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    // 链表逆序
+    private ListNode reverseList(ListNode head) {
+        ListNode curr = head;
+        ListNode prev = null;       
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+## [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+**示例 1：**
+
+```
+输入：head = [1,3,2]
+输出：[2,3,1]
+```
+
+**限制：**
+
+0 <= 链表长度 <= 10000
+
+### 栈
+
+栈的特点为 **先进后出** ，因此将链表节点依次入栈，再出栈，即可从尾到头输出链表的节点的值。
+
+```java
+class Solution {
+    public int[] reversePrint(ListNode head) {
+        Deque<Integer> stack = new LinkedList<>();
+        ListNode curr = head;
+        while (curr != null) {
+            stack.push(curr.val);
+            curr = curr.next;
+        }
+        int[] res = new int[stack.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = stack.pop();
+        }
+        return res;
+    }
+}
+```
+
+### 递归（回溯）
+
+使用递归，先走至链表尾，指针指向空时开始回溯，在回溯时依次保存头结点的值，即可反向输出链表的值。
+
+```java
+class Solution {
+    List<Integer> tmp = new ArrayList<>();
+    public int[] reversePrint(ListNode head) {
+        recur(head);
+        int[] res = new int[tmp.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = tmp.get(i);
+        }
+        return res;
+    }
+
+    private void recur(ListNode head) {
+        if (head == null) return;	// 指向空时向上回溯
+        recur(head.next);	// 向下递归
+        tmp.add(head.val);
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(n) 
+
+## [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
+
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
+
+图示两个链表在节点 c1 开始相交：
+
+![image-20210803211523652](E:\doc\Note\LeetCode Note.assets\image-20210803211523652.png)
+
+题目数据 **保证** 整个链式结构中不存在环。
+
+**注意**，函数返回结果后，链表必须 **保持其原始结构** 。
+
+**进阶：**你能否设计一个时间复杂度 `O(n)` 、仅用 `O(1)` 内存的解决方案？
+
+### 双指针
+
+两个链表相交时：
+
+链表 headA 和 headB 的长度分别是 m 和 n 。假设链表 headA 的不相交部分有 a 个节点，链表 headB 的不相交部分有 b 个节点，两个链表相交的部分有 c 个节点，则有 `a + c = m` ，`b + c = n` 。
+
+* 如果 `a = b` ，则两个指针会同时到达两个链表相交的节点，此时返回相交的节点。
+* 如果 `a != b` ，则指针 pA 会遍历完链表 headA ，则指针 pB 会遍历完链表 headB ，两个指针不会同时到达链表的尾节点，然后将 pA 移动到 headB 的头节点，将 pB 移动到 headA 的头节点，两个指针继续移动，两个指针会同时到达链表相交的节点，此时返回相交的节点。
+
+两个链表不相交时：
+
+* 如果 `m = n` ，两个指针会同时到达两个链表的尾节点，同时变成 null ，此时返回 null 。
+* 如果 `m != n` ，由于两个链表没有公共节点，两个指针也不会同时到达两个链表的尾节点，因此两个指针都会遍历完两个链表，在指针 pA 移动了 m+n 次、指针 pB 移动了 n+m 次之后，两个指针会同时变成空值 null ，此时返回 null 。
+
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+        ListNode pA = headA;
+        ListNode pB = headB;
+
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        return pA;
+    }
+}
+```
+
+# [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。
+
+例如，一个链表有 6 个节点，从头节点开始，它们的值依次是 1、2、3、4、5、6。这个链表的倒数第 3 个节点是值为 4 的节点。
+
+**示例：**
+
+```
+给定一个链表: 1->2->3->4->5, 和 k = 2.
+
+返回链表 4->5.
+```
+
+## 双指针
+
+* p 和 q 指针指向 head，先让 q 指针向前走 k 步。
+* p 和 q 同时向前走，q 走到终点时，p指向的即为倒数第 k 个节点。
+
+```java
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        if (k == 0 || head == null) return null;
+        ListNode p = head, q = head;
+        while (k > 0) {
+            if (q == null) return null;
+            q = q.next;
+            k--;
+        }
+        while (q != null) {
+            q = q.next;
+            p = p.next;
+        }
+        return p;
+    }
+}
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+```
+
+
+
+
+
+## 141. 环形链表
 
 给定一个链表，判断链表中是否有环。
 
 如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。
 
-## Floyd 判圈算法（龟兔赛跑算法）
+### Floyd 判圈算法（龟兔赛跑算法）
 
 假想「乌龟」和「兔子」在链表上移动，「兔子」跑得快，「乌龟」跑得慢。当「乌龟」和「兔子」从链表上的同一个节点开始移动时，如果该链表中没有环，那么「兔子」将一直处于「乌龟」的前方；如果该链表中有环，那么「兔子」会先于「乌龟」进入环，并且一直在环内移动。等到「乌龟」进入环时，由于「兔子」的速度快，它一定会在某个时刻与乌龟相遇，即套了「乌龟」若干圈。
 
@@ -39,11 +681,11 @@ class ListNode {
 }
 ```
 
-# [142. 环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
+## [142. 环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
 
 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 `null`。
 
-## 快慢指针
+### 快慢指针
 
 我们使用两个指针，fast与slow。它们起始都位于链表的头部。随后，slow指针每次向后移动一个位置，而fast指针向后移动两个位置。如果链表中存在环，则fast指针最终将再次与slow指针在环中相遇。
 
@@ -1666,51 +2308,6 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(1)
 
-# [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
-
-输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。
-
-例如，一个链表有 6 个节点，从头节点开始，它们的值依次是 1、2、3、4、5、6。这个链表的倒数第 3 个节点是值为 4 的节点。
-
-**示例：**
-
-```
-给定一个链表: 1->2->3->4->5, 和 k = 2.
-
-返回链表 4->5.
-```
-
-## 双指针
-
-* p 和 q 指针指向 head，先让 q 指针向前走 k 步。
-* p 和 q 同时向前走，q 走到终点时，p指向的即为倒数第 k 个节点。
-
-```java
-class Solution {
-    public ListNode getKthFromEnd(ListNode head, int k) {
-        if (k == 0 || head == null) return null;
-        ListNode p = head, q = head;
-        while (k > 0) {
-            q = q.next;
-            k--;
-        }
-        while (q != null) {
-            q = q.next;
-            p = p.next;
-        }
-        return p;
-    }
-}
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-```
-
 # [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
 
 ## 同 [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
@@ -2279,7 +2876,7 @@ Trie树是一种专门处理字符串匹配的数据结构，用来解决在一�
 
 Trie 树的本质，就是利用字符串之间的公共前缀，将重复的前缀合并在一起。
 
-![img](https://static001.geekbang.org/resource/image/28/32/280fbc0bfdef8380fcb632af39e84b32.jpg)
+![img](G:\doc\Note\LeetCode Note.assets\280fbc0bfdef8380fcb632af39e84b32.jpg)
 
 ```java
 class Trie {
@@ -2352,118 +2949,4 @@ class Trie {
  * boolean param_3 = obj.startsWith(prefix);
  */
 ```
-
-# [面试题 17.17. 多次搜索](https://leetcode-cn.com/problems/multi-search-lcci/)
-
-给定一个较长字符串 big 和一个包含较短字符串的数组 smalls ，设计一个方法，根据 smalls 中的每一个较短字符串，对 big 进行搜索。输出 smalls 中的字符串在 big 里出现的所有位置 positions ，其中 positions[i] 为 smalls[i] 出现的所有位置。
-
-**示例：**
-
-```
-输入：
-big = "mississippi"
-smalls = ["is","ppi","hi","sis","i","ssippi"]
-输出： [[1,4],[8],[],[3],[1,4,7,10],[5]]
-```
-
-**提示：**
-
-* 0 <= len(big) <= 1000
-* 0 <= len(smalls[i]) <= 1000
-* smalls的总字符数不会超过 100000。
-* 你可以认为smalls中没有重复字符串。
-* 所有出现的字符均为英文小写字母。
-
-## 前缀树
-
-* 用 smalls 构造前缀树。
-* 在前缀树中查找所有 big 中由 i 到末尾的子串，若能遍历到前缀树中 end 不为空的节点，则说明该条路径对应的字符串（即 end 中存储的字符串）在 big 中存在。
-
-```java
-class Solution {
-    public int[][] multiSearch(String big, String[] smalls) {
-        Trie trie = new Trie(smalls);
-        Map<String, List<Integer>> hit = new HashMap<>();
-        for (int i = 0; i < big.length(); i++) {
-            List<String> matchs = trie.search(big.substring(i));
-            for (String word : matchs) {
-                if (!hit.containsKey(word)) {
-                    hit.put(word, new ArrayList<>());
-                }
-                hit.get(word).add(i);
-            }
-        }
-
-        int[][] res = new int[smalls.length][];
-        for (int i = 0; i < smalls.length; i++) {
-            List<Integer> list = hit.get(smalls[i]);
-            if (list == null) {
-                res[i] = new int[0];
-                continue;
-            }
-            int size = list.size();
-            res[i] = new int[size];
-            for (int j = 0; j < size; j++) {
-                res[i][j] = list.get(j);
-            }
-        }
-        return res;
-    }
-
-    class Trie {
-        private TreeNode root;
-
-        public Trie(String[] words) {
-            root = new TreeNode('/');
-            for (String word : words) {
-                insert(word);
-            }
-        }
-        
-        public void insert(String word) {
-            TreeNode p = root;
-            for (int i = 0; i < word.length(); i++) {
-                char c = word.charAt(i);
-                int index = c - 'a';
-                if (p.children[index] == null) {
-                    TreeNode node = new TreeNode(c);
-                    p.children[index] = node;
-                }
-                p = p.children[index];
-            }
-            p.end = word;
-        }
-        
-        public List<String> search(String word) {
-            TreeNode p = root;
-            List<String> res = new ArrayList<>();
-            for (int i = 0; i < word.length(); i++) {
-                char c = word.charAt(i);
-                int index = c - 'a';
-                if (p.children[index] == null) {
-                    break;
-                }
-                p = p.children[index];
-                if (p.end != null) {
-                    res.add(p.end);
-                }
-            }
-            return res;
-        }
-
-        public class TreeNode {
-            public char data;
-            public TreeNode[] children = new TreeNode[26];
-            public String end;
-            public TreeNode(char data) {
-                this.data = data;
-            }
-        }
-    }
-}
-```
-
-
-
-
 
