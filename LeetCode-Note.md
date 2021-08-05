@@ -1,6 +1,8 @@
 # 链表
 
-## [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/) 
+## 链表中的加法
+
+### [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers/) 
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
 
@@ -36,7 +38,7 @@
 - `0 <= Node.val <= 9`
 - 题目数据保证列表表示的数字不含前导零
 
-### 题解
+#### 题解
 
 由于输入的链表是逆序存储，因此可以从头开始，逐位计算两个节点的和，并与进位值相加。
 
@@ -72,7 +74,7 @@ class Solution {
 * 时间复杂度：O(max(m, n))，m 和 n 分别为两个链表的长度
 * 空间复杂度：O(1)，返回值不计入复杂度
 
-## [445. 两数相加 II](https://leetcode-cn.com/problems/add-two-numbers-ii/)
+### [445. 两数相加 II](https://leetcode-cn.com/problems/add-two-numbers-ii/)
 
 给你两个 **非空** 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
 
@@ -107,7 +109,7 @@ class Solution {
 
 **进阶：**如果输入链表不能修改该如何处理？换句话说，不能对列表中的节点进行翻转。
 
-### 栈
+#### 栈
 
 借助**栈**，将节点的值依次存入栈中，再取出，就可以实现从低位到高位访问数字。
 
@@ -149,7 +151,9 @@ class Solution {
 * 时间复杂度：O(max(m, n))，m 和 n 分别为两个链表的长度
 * 空间复杂度：O(m + n)，使用了栈
 
-## [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
+## 反转链表
+
+### [206. 反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
 
 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
 
@@ -179,7 +183,7 @@ class Solution {
 - 链表中节点的数目范围是 `[0, 5000]`
 - `-5000 <= Node.val <= 5000`
 
-### 迭代
+#### 迭代
 
 ```java
 class Solution {
@@ -200,7 +204,7 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(1)
 
-### 递归
+#### 递归
 
 ```java
 class Solution {
@@ -219,7 +223,7 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(n) ，空间复杂度主要取决于递归调用的栈空间，最多为 n 层
 
-## [92. 反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
+### [92. 反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
 
 给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
 
@@ -244,19 +248,19 @@ class Solution {
 - `-500 <= Node.val <= 500`
 - `1 <= left <= right <= n`
 
-### 一趟扫描
+#### 一趟扫描
 
 解决链表问题的技巧：**画图**
 
-![image.png](E:\doc\Note\LeetCode Note.assets\1615105296-bmiPxl-image.png)
+![image.png](LeetCode Note.assets\1615105296-bmiPxl-image.png)
 
-![image.png](E:\doc\Note\LeetCode Note.assets\1615105340-UBnTBZ-image.png)
+![image.png](LeetCode Note.assets\1615105340-UBnTBZ-image.png)
 
-![image.png](E:\doc\Note\LeetCode Note.assets\1615105353-PsCmzb-image.png)
+![image.png](LeetCode Note.assets\1615105353-PsCmzb-image.png)
 
-![image.png](E:\doc\Note\LeetCode Note.assets\1615105364-aDIFqy-image.png)
+![image.png](LeetCode Note.assets\1615105364-aDIFqy-image.png)
 
-![image.png](E:\doc\Note\LeetCode Note.assets\1615105376-jIyGwv-image.png)
+![image.png](LeetCode Note.assets\1615105376-jIyGwv-image.png)
 
 ```java
 class Solution {
@@ -283,11 +287,11 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(1) 
 
-## [143. 重排链表](https://leetcode-cn.com/problems/reorder-list/)
+### [143. 重排链表](https://leetcode-cn.com/problems/reorder-list/)
 
 **示例 1:**
 
-![image-20210802213526506](E:\doc\Note\LeetCode Note.assets\image-20210802213526506.png)
+![image-20210802213526506](LeetCode Note.assets\image-20210802213526506.png)
 
 ```
 输入: head = [1,2,3,4]
@@ -306,7 +310,7 @@ class Solution {
 - 链表的长度范围为 `[1, 5 * 104]`
 - `1 <= node.val <= 1000`
 
-### 寻找链表中点 + 链表逆序 + 合并链表
+#### 寻找链表中点 + 链表逆序 + 合并链表
 
 观察重排后的链表可以发现，重排链表为原链表的 **前半部分** 与 **后半部分的逆序** 合并后的结果。
 
@@ -375,7 +379,7 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(1) 
 
-## [876. 链表的中间结点](https://leetcode-cn.com/problems/middle-of-the-linked-list/)
+### [876. 链表的中间结点](https://leetcode-cn.com/problems/middle-of-the-linked-list/)
 
 给定一个头结点为 `head` 的非空单链表，返回链表的中间结点。
 
@@ -385,7 +389,7 @@ class Solution {
 
 给定链表的结点数介于 1 和 100 之间。
 
-### 快慢指针
+#### 快慢指针
 
 ```java
 class Solution {
@@ -401,7 +405,7 @@ class Solution {
 }
 ```
 
-## [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
+### [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
 
 请判断一个链表是否为回文链表。
 
@@ -423,7 +427,7 @@ class Solution {
 **进阶：**
 你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
 
-### 反转链表
+#### 反转链表
 
 根据回文链表的特点，将链表后半部分反转后与前半部分相同，因此可以这样处理：
 
@@ -482,7 +486,7 @@ class Solution {
 }
 ```
 
-## [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+### [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
 
 输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
 
@@ -497,7 +501,7 @@ class Solution {
 
 0 <= 链表长度 <= 10000
 
-### 栈
+#### 栈
 
 栈的特点为 **先进后出** ，因此将链表节点依次入栈，再出栈，即可从尾到头输出链表的节点的值。
 
@@ -519,7 +523,7 @@ class Solution {
 }
 ```
 
-### 递归（回溯）
+#### 递归（回溯）
 
 使用递归，先走至链表尾，指针指向空时开始回溯，在回溯时依次保存头结点的值，即可反向输出链表的值。
 
@@ -546,13 +550,15 @@ class Solution {
 * 时间复杂度：O(n)
 * 空间复杂度：O(n) 
 
-## [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
+## 相交链表
+
+### [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
 
 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
 
 图示两个链表在节点 c1 开始相交：
 
-![image-20210803211523652](E:\doc\Note\LeetCode Note.assets\image-20210803211523652.png)
+![image-20210803211523652](LeetCode Note.assets\image-20210803211523652.png)
 
 题目数据 **保证** 整个链式结构中不存在环。
 
@@ -560,7 +566,7 @@ class Solution {
 
 **进阶：**你能否设计一个时间复杂度 `O(n)` 、仅用 `O(1)` 内存的解决方案？
 
-### 双指针
+#### 双指针
 
 两个链表相交时：
 
@@ -590,7 +596,9 @@ public class Solution {
 }
 ```
 
-# [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+## 倒数第k个节点
+
+### [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
 
 输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。
 
@@ -604,7 +612,7 @@ public class Solution {
 返回链表 4->5.
 ```
 
-## 双指针
+#### 双指针
 
 * p 和 q 指针指向 head，先让 q 指针向前走 k 步。
 * p 和 q 同时向前走，q 走到终点时，p指向的即为倒数第 k 个节点。
@@ -636,17 +644,15 @@ class Solution {
  */
 ```
 
+## 环形链表
 
-
-
-
-## 141. 环形链表
+### 141. 环形链表
 
 给定一个链表，判断链表中是否有环。
 
 如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。
 
-### Floyd 判圈算法（龟兔赛跑算法）
+#### Floyd 判圈算法（龟兔赛跑算法）
 
 假想「乌龟」和「兔子」在链表上移动，「兔子」跑得快，「乌龟」跑得慢。当「乌龟」和「兔子」从链表上的同一个节点开始移动时，如果该链表中没有环，那么「兔子」将一直处于「乌龟」的前方；如果该链表中有环，那么「兔子」会先于「乌龟」进入环，并且一直在环内移动。等到「乌龟」进入环时，由于「兔子」的速度快，它一定会在某个时刻与乌龟相遇，即套了「乌龟」若干圈。
 
@@ -681,11 +687,14 @@ class ListNode {
 }
 ```
 
-## [142. 环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
+* 时间复杂度：O(n)
+* 空间复杂度：O(1) 
+
+### [142. 环形链表 II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
 
 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 `null`。
 
-### 快慢指针
+#### 快慢指针
 
 我们使用两个指针，fast与slow。它们起始都位于链表的头部。随后，slow指针每次向后移动一个位置，而fast指针向后移动两个位置。如果链表中存在环，则fast指针最终将再次与slow指针在环中相遇。
 
@@ -698,7 +707,7 @@ a + (n + 1)b + nc = 2(a + b)  ⟹  a = c + (n − 1)(b + c)
 
 因此，当发现slow与fast相遇时，我们再额外使用一个指针ptr。起始，它指向链表头部；随后，它和slow每次向后移动一个位置。最终，它们会在入环点相遇。
 
-<img src="https://i.loli.net/2020/10/11/HUfSod9RwEWP7yb.png" style="zoom: 50%;" />
+<img src="LeetCode-Note.assets/HUfSod9RwEWP7yb.png" style="zoom: 50%;" />
 
 ```java
 public class Solution {
@@ -727,6 +736,96 @@ public class Solution {
     }
 }
 ```
+
+## 删除链表中的某个节点
+
+### [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)
+
+给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+
+返回删除后的链表的头节点。
+
+**注意：**此题对比原题有改动
+
+**示例 1:**
+
+```
+输入: head = [4,5,1,9], val = 5
+输出: [4,1,9]
+解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+```
+
+**示例 2:**
+
+```
+输入: head = [4,5,1,9], val = 1
+输出: [4,5,9]
+解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+```
+
+**说明：**
+
+* 题目保证链表中节点的值互不相同
+* 若使用 C 或 C++ 语言，你不需要 free 或 delete 被删除的节点
+
+#### 双指针
+
+```java
+class Solution {
+    public ListNode deleteNode(ListNode head, int val) {
+        if (head == null) return null;
+        if (head.val == val) return head.next;
+        ListNode pre = head, cur = head.next;
+        while (cur != null && cur.val != val) {
+            pre = cur;
+            cur = cur.next;
+        }
+        if (cur != null) pre.next = cur.next;
+        return head;
+    }
+}
+```
+
+* 时间复杂度：O(n)
+* 空间复杂度：O(1)
+
+### [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
+
+请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点。传入函数的唯一参数为 **要被删除的节点** 。
+
+**示例 1：**
+
+```
+输入：head = [4,5,1,9], node = 5
+输出：[4,1,9]
+解释：给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+```
+
+**提示：**
+
+- 链表至少包含两个节点。
+- 链表中所有节点的值都是唯一的。
+- 给定的节点为非末尾节点并且一定是链表中的一个有效节点。
+- 不要从你的函数中返回任何结果。
+
+#### 与下一个节点交换
+
+删除节点的常见操作是 `prev.next = node.next` ，但本题中无法得到待删除节点的前一个节点。
+
+因此，我们可以将待删除节点 `node` 的后一个节点中的值保存到 `node` 中，覆盖掉 `node` 中原本的值，然后删除后一个节点。
+
+`[4,5,1,9] -> [4,1,1,9] -> [4,1,9]`
+
+```java
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+```
+
+
 
 # [416. 分割等和子集](https://leetcode-cn.com/problems/partition-equal-subset-sum/)（不会）
 
@@ -2170,54 +2269,6 @@ class Solution {
 
 * 时间复杂度：O(10^n^) ，递归生成的排列的数量为 10^n^ 。
 * 空间复杂度：O(10^n^) ，res 的长度为 10^n^ - 1 。
-
-# [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)
-
-给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
-
-返回删除后的链表的头节点。
-
-**注意：**此题对比原题有改动
-
-**示例 1:**
-
-```
-输入: head = [4,5,1,9], val = 5
-输出: [4,1,9]
-解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
-```
-
-**示例 2:**
-
-```
-输入: head = [4,5,1,9], val = 1
-输出: [4,5,9]
-解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
-```
-
-**说明：**
-
-* 题目保证链表中节点的值互不相同
-* 若使用 C 或 C++ 语言，你不需要 free 或 delete 被删除的节点
-
-```java
-class Solution {
-    public ListNode deleteNode(ListNode head, int val) {
-        if (head == null) return null;
-        if (head.val == val) return head.next;
-        ListNode pre = head, cur = head.next;
-        while (cur != null && cur.val != val) {
-            pre = cur;
-            cur = cur.next;
-        }
-        if (cur != null) pre.next = cur.next;
-        return head;
-    }
-}
-```
-
-* 时间复杂度：O(n)
-* 空间复杂度：O(1)
 
 # 剑指 Offer 18-II. & [LC 82. 删除排序链表中的重复元素 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)
 
