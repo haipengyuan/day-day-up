@@ -825,6 +825,275 @@ class Solution {
 }
 ```
 
+### [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
+
+给你一个链表，删除链表的倒数第 `n` 个结点，并且返回链表的头结点。
+
+**进阶：**你能尝试使用一趟扫描实现吗？
+
+**示例 1：**
+
+```
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [1], n = 1
+输出：[]
+```
+
+**提示：**
+
+- 链表中结点的数目为 `sz`
+- `1 <= sz <= 30`
+- `0 <= Node.val <= 100`
+- `1 <= n <= sz`
+
+#### 双指针
+
+先找到倒数第 n+1 个结点，即倒数第 n 个结点的前驱节点，然后就可以删除掉倒数第 n 个节点。寻找倒数第 n+1 个结点的方法见 [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+```java
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (n == 0 || head == null) return null;
+        // 找到倒数第 n + 1 个节点
+        ListNode dummyNode = new ListNode();
+        dummyNode.next = head;
+        ListNode fast = head;
+        ListNode slow = dummyNode;
+        for (int i = 0; i < n; i++) {
+            if (fast == null) return null;
+            fast = fast.next;
+        }
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummyNode.next;
+    }
+}
+```
+
+### [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/)
+
+存在一个按升序排列的链表，给你这个链表的头节点 `head` ，请你删除所有重复的元素，使每个元素 **只出现一次** 。
+
+返回同样按升序排列的结果链表。
+
+**示例 1：**
+
+```
+输入：head = [1,1,2]
+输出：[1,2]
+```
+
+**示例 2：**
+
+```
+输入：head = [1,1,2,3,3]
+输出：[1,2,3]
+```
+
+**提示：**
+
+- 链表中节点数目在范围 `[0, 300]` 内
+- `-100 <= Node.val <= 100`
+- 题目数据保证链表已经按升序排列
+
+#### 遍历
+
+用指针 cur 指向链表的头节点，开始遍历。
+
+当 cur 与 cur.next 的值相同时，删除 cur.next 节点。
+
+当 cur 与 cur.next 的值不同时，由于节点是升序排列的，说明链表中不存在与 cur 的值相同的节点，将 cur 指针后移，直到遍历完整个链表。
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode cur = head;
+        while (cur.next != null) {
+            if (cur.val == cur.next.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        
+        return head;
+    }
+}
+```
+
+### [82. 删除排序链表中的重复元素 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)
+
+存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除链表中所有存在数字重复情况的节点，只保留原始链表中 没有重复出现 的数字。
+
+返回同样按升序排列的结果链表。
+
+**示例 1：**
+
+```
+输入：head = [1,2,3,3,4,4,5]
+输出：[1,2,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [1,1,1,2,3]
+输出：[2,3]
+```
+
+**提示：**
+
+- 链表中节点数目在范围 `[0, 300]` 内
+- `-100 <= Node.val <= 100`
+- 题目数据保证链表已经按升序排列
+
+#### 遍历 
+
+解法与 [83. 删除排序链表中的重复元素](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) 类似，但本题要**删除链表中所有存在数字重复情况的节点**，因此可以将重复的数字保存到变量 `x` 中，向后遍历并删除所有值为 `x` 的节点。
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+
+        ListNode dummyNode = new ListNode(0, head);
+        ListNode cur = dummyNode;
+        while (cur.next != null && cur.next.next != null) {
+            if (cur.next.val == cur.next.next.val) {
+                int x = cur.next.val;
+                while (cur.next != null && cur.next.val == x) {
+                    cur.next = cur.next.next;
+                }
+            } else {
+                cur = cur.next;
+            }
+        }
+        return dummyNode.next;
+    }
+}
+```
+
+### [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/)
+
+给你一个链表的头节点 `head` 和一个整数 `val` ，请你删除链表中所有满足 `Node.val == val` 的节点，并返回 **新的头节点** 。
+
+**示例 1：**
+
+```
+输入：head = [1,2,6,3,4,5,6], val = 6
+输出：[1,2,3,4,5]
+```
+
+**示例2：**
+
+```
+输入：head = [], val = 1
+输出：[]
+```
+
+**示例3：**
+
+```
+输入：head = [7,7,7,7], val = 7
+输出：[]
+```
+
+**提示：**
+
+- 列表中的节点数目在范围 `[0, 104]` 内
+- `1 <= Node.val <= 50`
+- `0 <= val <= 50`
+
+#### 题解
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return null;
+        ListNode dummyNode = new ListNode(0, head);
+        ListNode cur = dummyNode;
+        while (cur.next != null) {
+            if (cur.next.val == val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return dummyNode.next;
+    }
+}
+```
+
+## 排序链表
+
+### [147. 对链表进行插入排序](https://leetcode-cn.com/problems/insertion-sort-list/)
+
+对链表进行插入排序。
+
+**插入排序算法：**
+
+插入排序是迭代的，每次只移动一个元素，直到所有元素可以形成一个有序的输出列表。
+每次迭代中，插入排序只从输入数据中移除一个待排序的元素，找到它在序列中适当的位置，并将其插入。
+重复直到所有输入数据插入完为止。
+
+**示例 1：**
+
+```
+输入: -1->5->3->4->0
+输出: -1->0->3->4->5
+```
+
+#### 从前往后找插入点
+
+`lastSorted` 为链表的已排序部分的最后一个节点，`curr` 为待排序部分的第一个节点，`lastSorted.next = curr` ，首先比较这两个节点的值
+
+* 若 `lastSorted.val <= curr.val` ，说明 `curr` 应该位于 `lastSorted` 之后，无需移动，直接将 `lastSorted` 后移一位，继续判断下一个节点。
+* 否则，从头遍历链表，寻找 `curr` 节点应该插入的位置，完成插入即可。
+
+```java
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null) return null;
+        // 方便在head前插入节点
+        ListNode dummyNode = new ListNode(0, head);
+        ListNode lastSorted = head;     // 已排序链表的最后一个节点
+        ListNode curr = head.next;       // 待排序链表的第一个节点
+        
+        while (curr != null) {
+            if (lastSorted.val <= curr.val) {
+                lastSorted = lastSorted.next;
+            } else {
+                ListNode prev = dummyNode;
+                while (prev.next.val <= curr.val) {
+                    prev = prev.next;
+                }
+                lastSorted.next = curr.next;
+                curr.next = prev.next;
+                prev.next = curr;
+            }
+            curr = lastSorted.next;
+        }
+        return dummyNode.next;
+    }
+}
+```
+
+- 时间复杂度：O(n^2^) 
+- 空间复杂度：O(1)
+
 
 
 # [416. 分割等和子集](https://leetcode-cn.com/problems/partition-equal-subset-sum/)（不会）
